@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Typing Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 20px;
+            color: green;
+        }
+        #word {
+            font-weight: bold;
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <h1>Typing Timer</h1>
+    <p>Enter the word you want to time:</p>
+    <input type="text" id="wordInput" placeholder="Enter word here">
+    <button onclick="setWord()">Set Word</button>
+
+    <div id="typingArea" style="display:none;">
+        <p>Type the word: <span id="word"></span></p>
+        <input type="text" id="typingInput" placeholder="Start typing..." oninput="checkTyping()">
+    </div>
+
+    <div id="result"></div>
+
+    <script>
+        let word = '';
+        let startTime = 0;
+
+        function setWord() {
+            word = document.getElementById('wordInput').value;
+            if (word) {
+                document.getElementById('word').textContent = word;
+                document.getElementById('typingArea').style.display = 'block';
+                document.getElementById('typingInput').value = '';
+                document.getElementById('result').textContent = '';
+            } else {
+                alert('Please enter a word!');
+            }
+        }
+
+        function checkTyping() {
+            const typed = document.getElementById('typingInput').value;
+            if (typed === word && startTime === 0) {
+                startTime = new Date().getTime();
+            } else if (typed.length === word.length && typed !== word) {
+                document.getElementById('result').textContent = 'Word does not match!';
+            } else if (typed.length > word.length) {
+                const endTime = new Date().getTime();
+                const timeTaken = (endTime - startTime) / 1000;
+                document.getElementById('result').textContent = `Time taken: ${timeTaken.toFixed(2)} seconds`;
+                document.getElementById('typingInput').value = '';
+                startTime = 0;
+            }
+        }
+    </script>
+</body>
+</html>
